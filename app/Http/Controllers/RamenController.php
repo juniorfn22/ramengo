@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 use RuntimeException;
 use Symfony\Component\Process\ExecutableFinder;
 
-class RamenController extends Control
+class RamenController extends Controller
 {
     public function getBroths(): JsonResponse
     {
@@ -29,9 +29,8 @@ class RamenController extends Control
             'x-api-key' => 'ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf',
         ])->post('https://api.tech.redventures.com.br/orders/generate-id');
 
-        if ($response->successful()) {
-            $orderNumber = $response->json()['order_number'];
-
+        if ($response->successful() && isset($response->json()['orderId'])) {
+            $orderNumber = $response->json()['orderId'];
             return response()->json([
                 'message' => 'Order created successfully',
                 'order_number' => $orderNumber,
